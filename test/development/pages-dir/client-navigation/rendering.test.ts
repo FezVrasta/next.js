@@ -609,7 +609,15 @@ describe.each([[false], [true]])(
       const documentHeadElement =
         '<meta name="keywords" content="document head test"/>'
 
-      expect(html).toContain(`<head>${nextHeadElement}${documentHeadElement}`)
+      if (isReact18) {
+        // charset is not actually at the top.
+        // data-next-hide-fouc comes first
+        expect(html).toContain(
+          `</style></noscript>${nextHeadElement}${documentHeadElement}`
+        )
+      } else {
+        expect(html).toContain(`<head>${nextHeadElement}${documentHeadElement}`)
+      }
     })
   }
 )
